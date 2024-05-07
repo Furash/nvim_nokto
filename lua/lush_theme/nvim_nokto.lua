@@ -45,6 +45,20 @@
 local lush = require('lush')
 local hsl = lush.hsl
 
+-- Main
+local main_darker = hsl("#20272c") 
+local main_dark = hsl("#21292d") 
+local main_light = hsl("#294d43") 
+local main_lighter = hsl("#48ad7f") 
+local main_accent = hsl("#83ffda")
+
+-- Text
+local TEXT = hsl("#BAE3D4")
+local COMMENT = TEXT.darken(50)
+local STRING = hsl("#31875e")
+local BLUE = hsl("#2ca1b1")
+local PURPLE = hsl("#d37fdc")
+
 -- LSP/Linters mistakenly show `undefined global` errors in the spec, they may
 -- support an annotation like the following. Consult your server documentation.
 ---@diagnostic disable: undefined-global
@@ -61,6 +75,7 @@ local theme = lush(function(injected_functions)
     --
     -- See :h highlight-groups
     --
+    -- ColorColumn    { }, -- Columns set with 'colorcolumn'
     -- ColorColumn    { }, -- Columns set with 'colorcolumn'
     -- Conceal        { }, -- Placeholder characters substituted for concealed text (see 'conceallevel')
     -- Cursor         { }, -- Character under the cursor
@@ -96,7 +111,7 @@ local theme = lush(function(injected_functions)
     -- MsgSeparator   { }, -- Separator for scrolled messages, `msgsep` flag of 'display'
     -- MoreMsg        { }, -- |more-prompt|
     -- NonText        { }, -- '@' at the end of the window, characters from 'showbreak' and other characters that do not really exist in the text (e.g., ">" displayed when a double-wide character doesn't fit at the end of the line). See also |hl-EndOfBuffer|.
-    -- Normal         { }, -- Normal text
+    Normal{fg = TEXT, bg = main_dark}, -- Normal text
     -- NormalFloat    { }, -- Normal text in floating windows.
     -- FloatBorder    { }, -- Border of floating windows.
     -- FloatTitle     { }, -- Title of floating windows.
@@ -140,7 +155,7 @@ local theme = lush(function(injected_functions)
     --
     -- Uncomment and edit if you want more specific syntax highlighting.
 
-    -- Comment        { }, -- Any comment
+    Comment {fg = COMMENT, bg = main_dark}, -- Any comment
 
     -- Constant       { }, -- (*) Any constant
     -- String         { }, --   A string constant: "this is a string"
@@ -153,7 +168,7 @@ local theme = lush(function(injected_functions)
     -- Function       { }, --   Function name (also: methods for classes)
 
     -- Statement      { }, -- (*) Any statement
-    -- Conditional    { }, --   if, then, else, endif, switch, etc.
+    Conditional { fg = BLUE, bg = main_dark }, --   if, then, else, endif, switch, etc.
     -- Repeat         { }, --   for, do, while, etc.
     -- Label          { }, --   case, default, etc.
     -- Operator       { }, --   "sizeof", "+", "*", etc.
