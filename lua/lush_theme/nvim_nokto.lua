@@ -46,18 +46,22 @@ local lush = require('lush')
 local hsl = lush.hsl
 
 -- Main
-local main_darker = hsl("#20272c") 
-local main_dark = hsl("#21292d") 
-local main_light = hsl("#294d43") 
-local main_lighter = hsl("#48ad7f") 
-local main_accent = hsl("#83ffda")
+local DARK = hsl("#21292d") 
+local DARKER = DARK.darken(20) 
+local LIGHT = hsl("#294d43") 
+local LIGHTER = hsl("#7ec9a7")
+local ACTIVE = hsl("#43ffa3")
+
+local BLACK = hsl(0,0,0)
 
 -- Text
-local TEXT = hsl("#BAE3D4")
-local COMMENT = TEXT.darken(50)
+local TEXT = hsl("#c5f2e3")
+local COMMENT = TEXT.darken(45).desaturate(70)
 local STRING = hsl("#31875e")
-local BLUE = hsl("#2ca1b1")
+local CHAR = hsl("#60c040")
+local BLUE = hsl("#22dddd")
 local PURPLE = hsl("#d37fdc")
+local ORANGE = hsl("#ffb500")
 
 -- LSP/Linters mistakenly show `undefined global` errors in the spec, they may
 -- support an annotation like the following. Consult your server documentation.
@@ -78,12 +82,12 @@ local theme = lush(function(injected_functions)
     -- ColorColumn    { }, -- Columns set with 'colorcolumn'
     -- ColorColumn    { }, -- Columns set with 'colorcolumn'
     -- Conceal        { }, -- Placeholder characters substituted for concealed text (see 'conceallevel')
-    -- Cursor         { }, -- Character under the cursor
-    -- CurSearch      { }, -- Highlighting a search pattern under the cursor (see 'hlsearch')
+     Cursor         {fg = ACTIVE }, -- Character under the cursor
+     CurSearch      {fg = DARKER, bg = ORANGE }, -- Highlighting a search pattern under the cursor (see 'hlsearch')
     -- lCursor        { }, -- Character under the cursor when |language-mapping| is used (see 'guicursor')
     -- CursorIM       { }, -- Like Cursor, but used when in IME mode |CursorIM|
     -- CursorColumn   { }, -- Screen-column at the cursor, when 'cursorcolumn' is set.
-    -- CursorLine     { }, -- Screen-line at the cursor, when 'cursorline' is set. Low-priority if foreground (ctermfg OR guifg) is not set.
+     CursorLine     {bg = DARK}, -- Screen-line at the cursor, when 'cursorline' is set. Low-priority if foreground (ctermfg OR guifg) is not set.
     -- Directory      { }, -- Directory names (and other special names in listings)
     -- DiffAdd        { }, -- Diff mode: Added line |diff.txt|
     -- DiffChange     { }, -- Diff mode: Changed line |diff.txt|
@@ -97,22 +101,22 @@ local theme = lush(function(injected_functions)
     -- Folded         { }, -- Line used for closed folds
     -- FoldColumn     { }, -- 'foldcolumn'
     -- SignColumn     { }, -- Column where |signs| are displayed
-    -- IncSearch      { }, -- 'incsearch' highlighting; also used for the text replaced with ":s///c"
-    -- Substitute     { }, -- |:substitute| replacement text highlighting
-    -- LineNr         { }, -- Line number for ":number" and ":#" commands, and when 'number' or 'relativenumber' option is set.
-    -- LineNrAbove    { }, -- Line number for when the 'relativenumber' option is set, above the cursor line
-    -- LineNrBelow    { }, -- Line number for when the 'relativenumber' option is set, below the cursor line
+     IncSearch      {fg = PURPLE, bg = DARK.darken(60) }, -- 'incsearch' highlighting; also used for the text replaced with ":s///c"
+     Substitute     {fg = LIGHTER, bg = LIGHT }, -- |:substitute| replacement text highlighting
+    LineNr         {fg = TEXT.darken(30).desaturate(50) }, -- Line number for ":number" and ":#" commands, and when 'number' or 'relativenumber' option is set.
+    LineNrAbove    { fg = TEXT.darken(50).desaturate(75) }, -- Line number for when the 'relativenumber' option is set, above the cursor line
+    LineNrBelow    { fg = TEXT.darken(50).desaturate(75) }, -- Line number for when the 'relativenumber' option is set, below the cursor line
     -- CursorLineNr   { }, -- Like LineNr when 'cursorline' or 'relativenumber' is set for the cursor line.
     -- CursorLineFold { }, -- Like FoldColumn when 'cursorline' is set for the cursor line
     -- CursorLineSign { }, -- Like SignColumn when 'cursorline' is set for the cursor line
-    -- MatchParen     { }, -- Character under the cursor or just before it, if it is a paired bracket, and its match. |pi_paren.txt|
+     MatchParen     {fg = TEXT, bg = DARK }, -- Character under the cursor or just before it, if it is a paired bracket, and its match. |pi_paren.txt|
     -- ModeMsg        { }, -- 'showmode' message (e.g., "-- INSERT -- ")
     -- MsgArea        { }, -- Area for messages and cmdline
     -- MsgSeparator   { }, -- Separator for scrolled messages, `msgsep` flag of 'display'
     -- MoreMsg        { }, -- |more-prompt|
-    -- NonText        { }, -- '@' at the end of the window, characters from 'showbreak' and other characters that do not really exist in the text (e.g., ">" displayed when a double-wide character doesn't fit at the end of the line). See also |hl-EndOfBuffer|.
-    Normal{fg = TEXT, bg = main_dark}, -- Normal text
-    -- NormalFloat    { }, -- Normal text in floating windows.
+    NonText        {fg = TEXT.darken(30).desaturate(80) }, -- '@' at the end of the window, characters from 'showbreak' and other characters that do not really exist in the text (e.g., ">" displayed when a double-wide character doesn't fit at the end of the line). See also |hl-EndOfBuffer|.
+    Normal{fg = TEXT, bg = DARK}, -- Normal text
+    NormalFloat    { fg = TEXT, bg = DARKER }, -- Normal text in floating windows.
     -- FloatBorder    { }, -- Border of floating windows.
     -- FloatTitle     { }, -- Title of floating windows.
     -- NormalNC       { }, -- normal text in non-current windows
@@ -126,7 +130,7 @@ local theme = lush(function(injected_functions)
     -- PmenuThumb     { }, -- Popup menu: Thumb of the scrollbar.
     -- Question       { }, -- |hit-enter| prompt and yes/no questions
     -- QuickFixLine   { }, -- Current |quickfix| item in the quickfix window. Combined with |hl-CursorLine| when the cursor is there.
-    -- Search         { }, -- Last search pattern highlighting (see 'hlsearch'). Also used for similar items that need to stand out.
+     Search         { fg = DARKER, bg = TEXT.darken(20) }, -- Last search pattern highlighting (see 'hlsearch'). Also used for similar items that need to stand out.
     -- SpecialKey     { }, -- Unprintable characters: text displayed differently from what it really is. But not 'listchars' whitespace. |hl-Whitespace|
     -- SpellBad       { }, -- Word that is not recognized by the spellchecker. |spell| Combined with the highlighting used otherwise.
     -- SpellCap       { }, -- Word that should start with a capital. |spell| Combined with the highlighting used otherwise.
@@ -138,7 +142,7 @@ local theme = lush(function(injected_functions)
     -- TabLineFill    { }, -- Tab pages line, where there are no labels
     -- TabLineSel     { }, -- Tab pages line, active tab page label
     -- Title          { }, -- Titles for output from ":set all", ":autocmd" etc.
-    -- Visual         { }, -- Visual mode selection
+    Visual         {fg = LIGHTER, bg = LIGHT }, -- Visual mode selection
     -- VisualNOS      { }, -- Visual mode selection when vim is "Not Owning the Selection".
     -- WarningMsg     { }, -- Warning messages
     -- Whitespace     { }, -- "nbsp", "space", "tab" and "trail" in 'listchars'
@@ -155,25 +159,25 @@ local theme = lush(function(injected_functions)
     --
     -- Uncomment and edit if you want more specific syntax highlighting.
 
-    Comment {fg = COMMENT, bg = main_dark}, -- Any comment
+    Comment     {fg = COMMENT }, -- Any comment
 
     -- Constant       { }, -- (*) Any constant
-    -- String         { }, --   A string constant: "this is a string"
-    -- Character      { }, --   A character constant: 'c', '\n'
+    String      { fg = STRING }, --   A string constant: "this is a string"
+    Character   { fg = CHAR }, --   A character constant: 'c', '\n'
     -- Number         { }, --   A number constant: 234, 0xff
     -- Boolean        { }, --   A boolean constant: TRUE, false
     -- Float          { }, --   A floating point constant: 2.3e10
 
     -- Identifier     { }, -- (*) Any variable name
-    Function    {fg = PURPLE, bg = main_dark}, --   Function name (also: methods for classes)
+    Function    { fg = PURPLE }, --   Function name (also: methods for classes)
 
     -- Statement      { }, -- (*) Any statement
-    Conditional { fg = BLUE, bg = main_dark }, --   if, then, else, endif, switch, etc.
-    -- Repeat         { }, --   for, do, while, etc.
-    -- Label          { }, --   case, default, etc.
-    Operator       { fg = BLUE, bg = main_dark }, --   "sizeof", "+", "*", etc.
-    -- Keyword        { }, --   any other keyword
-    -- Exception      { }, --   try, catch, throw
+    Conditional { fg = BLUE }, --   if, then, else, endif, switch, etc.
+    Repeat      { fg = BLUE }, --   for, do, while, etc.
+    Label       { fg = BLUE }, --   case, default, etc.
+    Operator    { fg = BLUE }, --   "sizeof", "+", "*", etc.
+    Keyword     { fg = BLUE }, --   any other keyword
+    Exception   { fg = BLUE }, --   try, catch, throw
 
     -- PreProc        { }, -- (*) Generic Preprocessor
     -- Include        { }, --   Preprocessor #include
