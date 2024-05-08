@@ -56,8 +56,8 @@ local BLACK = hsl(0,0,0)
 
 -- Text
 local TEXT = hsl("#c5f2e3")
-local COMMENT = TEXT.darken(45).desaturate(70)
-local STRING = hsl("#31875e")
+local COMMENT = TEXT.darken(50).desaturate(90)
+local STRING = hsl("#60b48d")
 local CHAR = hsl("#60c040")
 local BLUE = hsl("#22dddd")
 local PURPLE = hsl("#d37fdc")
