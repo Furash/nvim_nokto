@@ -46,9 +46,9 @@ local lush = require('lush')
 local hsl = lush.hsl
 
 -- Main
-local DARK = hsl("#21292d") 
-local DARKER = DARK.darken(20) 
-local LIGHT = hsl("#294d43") 
+local DARK = hsl("#21292d")
+local DARKER = DARK.darken(20)
+local LIGHT = hsl("#294d43")
 local LIGHTER = hsl("#7ec9a7")
 local ACTIVE = hsl("#43ffa3")
 
@@ -62,6 +62,8 @@ local CHAR = hsl("#60c040")
 local BLUE = hsl("#22dddd")
 local PURPLE = hsl("#d37fdc")
 local ORANGE = hsl("#ffb500")
+local RED = hsl("#ff5555")
+local GREEN = hsl("#00ff00").darken(20)
 
 -- LSP/Linters mistakenly show `undefined global` errors in the spec, they may
 -- support an annotation like the following. Consult your server documentation.
@@ -79,58 +81,56 @@ local theme = lush(function(injected_functions)
     --
     -- See :h highlight-groups
     --
-    -- ColorColumn    { }, -- Columns set with 'colorcolumn'
-    -- ColorColumn    { }, -- Columns set with 'colorcolumn'
-    -- Conceal        { }, -- Placeholder characters substituted for concealed text (see 'conceallevel')
-     Cursor         {fg = ACTIVE }, -- Character under the cursor
-     CurSearch      {fg = DARKER, bg = ORANGE }, -- Highlighting a search pattern under the cursor (see 'hlsearch')
+    ColorColumn    { bg = DARKER }, -- Columns set with 'colorcolumn'
+    Conceal        { fg = ORANGE }, -- Placeholder characters substituted for concealed text (see 'conceallevel')R }, -- Character under the cursor
     -- lCursor        { }, -- Character under the cursor when |language-mapping| is used (see 'guicursor')
     -- CursorIM       { }, -- Like Cursor, but used when in IME mode |CursorIM|
     -- CursorColumn   { }, -- Screen-column at the cursor, when 'cursorcolumn' is set.
-     CursorLine     {bg = DARK}, -- Screen-line at the cursor, when 'cursorline' is set. Low-priority if foreground (ctermfg OR guifg) is not set.
+    CursorLine     {bg = DARK.darken(5)}, -- Screen-line at the cursor, when 'cursorline' is set. Low-priority if foreground (ctermfg OR guifg) is not set.
     -- Directory      { }, -- Directory names (and other special names in listings)
-    -- DiffAdd        { }, -- Diff mode: Added line |diff.txt|
-    -- DiffChange     { }, -- Diff mode: Changed line |diff.txt|
-    -- DiffDelete     { }, -- Diff mode: Deleted line |diff.txt|
+    DiffAdd        { fg = GREEN  }, -- Diff mode: Added line |diff.txt|
+    DiffChange     { fg = ORANGE }, -- Diff mode: Changed line |diff.txt|
+    DiffDelete     { fg = RED    }, -- Diff mode: Deleted line |diff.txt|
     -- DiffText       { }, -- Diff mode: Changed text within a changed line |diff.txt|
     -- EndOfBuffer    { }, -- Filler lines (~) after the end of the buffer. By default, this is highlighted like |hl-NonText|.
     -- TermCursor     { }, -- Cursor in a focused terminal
     -- TermCursorNC   { }, -- Cursor in an unfocused terminal
-    -- ErrorMsg       { }, -- Error messages on the command line
+    ErrorMsg       { fg = RED}, -- Error messages on the command line
     -- VertSplit      { }, -- Column separating vertically split windows
     -- Folded         { }, -- Line used for closed folds
     -- FoldColumn     { }, -- 'foldcolumn'
     -- SignColumn     { }, -- Column where |signs| are displayed
-     IncSearch      {fg = PURPLE, bg = DARK.darken(60) }, -- 'incsearch' highlighting; also used for the text replaced with ":s///c"
-     Substitute     {fg = LIGHTER, bg = LIGHT }, -- |:substitute| replacement text highlighting
-    LineNr         {fg = TEXT.darken(30).desaturate(50) }, -- Line number for ":number" and ":#" commands, and when 'number' or 'relativenumber' option is set.
+    CurSearch      { fg = ACTIVE, bg = DARKER  }, -- Highlighting a search pattern under the cursor (see 'hlsearch')
+    IncSearch      { fg = PURPLE, bg = DARKER }, -- 'incsearch' highlighting; also used for the text replaced with ":s///c"
+    Substitute     { fg = TEXT, bg = DARKER }, -- |:substitute| replacement text highlighting
+    LineNr         { fg = TEXT.darken(30).desaturate(50) }, -- Line number for ":number" and ":#" commands, and when 'number' or 'relativenumber' option is set.
     LineNrAbove    { fg = TEXT.darken(50).desaturate(75) }, -- Line number for when the 'relativenumber' option is set, above the cursor line
     LineNrBelow    { fg = TEXT.darken(50).desaturate(75) }, -- Line number for when the 'relativenumber' option is set, below the cursor line
     -- CursorLineNr   { }, -- Like LineNr when 'cursorline' or 'relativenumber' is set for the cursor line.
     -- CursorLineFold { }, -- Like FoldColumn when 'cursorline' is set for the cursor line
     -- CursorLineSign { }, -- Like SignColumn when 'cursorline' is set for the cursor line
-     MatchParen     {fg = TEXT, bg = DARK }, -- Character under the cursor or just before it, if it is a paired bracket, and its match. |pi_paren.txt|
+    MatchParen     { fg = TEXT, bg = DARK }, -- Character under the cursor or just before it, if it is a paired bracket, and its match. |pi_paren.txt|
     -- ModeMsg        { }, -- 'showmode' message (e.g., "-- INSERT -- ")
     -- MsgArea        { }, -- Area for messages and cmdline
     -- MsgSeparator   { }, -- Separator for scrolled messages, `msgsep` flag of 'display'
     -- MoreMsg        { }, -- |more-prompt|
-    NonText        {fg = TEXT.darken(30).desaturate(80) }, -- '@' at the end of the window, characters from 'showbreak' and other characters that do not really exist in the text (e.g., ">" displayed when a double-wide character doesn't fit at the end of the line). See also |hl-EndOfBuffer|.
-    Normal{fg = TEXT, bg = DARK}, -- Normal text
+    NonText        { fg = TEXT.darken(30).desaturate(80) }, -- '@' at the end of the window, characters from 'showbreak' and other characters that do not really exist in the text (e.g., ">" displayed when a double-wide character doesn't fit at the end of the line). See also |hl-EndOfBuffer|.
+    Normal         { fg = TEXT, bg = DARK}, -- Normal text
     NormalFloat    { fg = TEXT, bg = DARKER }, -- Normal text in floating windows.
     -- FloatBorder    { }, -- Border of floating windows.
     -- FloatTitle     { }, -- Title of floating windows.
-    -- NormalNC       { }, -- normal text in non-current windows
-    -- Pmenu          { }, -- Popup menu: Normal item.
+    NormalNC       { fg = TEXT }, -- normal text in non-current windows
+    Pmenu          { fg = TEXT }, -- Popup menu: Normal item.
     -- PmenuSel       { }, -- Popup menu: Selected item.
     -- PmenuKind      { }, -- Popup menu: Normal item "kind"
     -- PmenuKindSel   { }, -- Popup menu: Selected item "kind"
     -- PmenuExtra     { }, -- Popup menu: Normal item "extra text"
     -- PmenuExtraSel  { }, -- Popup menu: Selected item "extra text"
     -- PmenuSbar      { }, -- Popup menu: Scrollbar.
-    -- PmenuThumb     { }, -- Popup menu: Thumb of the scrollbar.
+    PmenuThumb     { fg = TEXT, bg = DARKER.darken(30) }, -- Popup menu: Thumb of the scrollbar.
     -- Question       { }, -- |hit-enter| prompt and yes/no questions
     -- QuickFixLine   { }, -- Current |quickfix| item in the quickfix window. Combined with |hl-CursorLine| when the cursor is there.
-     Search         { fg = DARKER, bg = TEXT.darken(20) }, -- Last search pattern highlighting (see 'hlsearch'). Also used for similar items that need to stand out.
+    Search         { fg = PURPLE, bg = DARKER }, -- Last search pattern highlighting (see 'hlsearch'). Also used for similar items that need to stand out.
     -- SpecialKey     { }, -- Unprintable characters: text displayed differently from what it really is. But not 'listchars' whitespace. |hl-Whitespace|
     -- SpellBad       { }, -- Word that is not recognized by the spellchecker. |spell| Combined with the highlighting used otherwise.
     -- SpellCap       { }, -- Word that should start with a capital. |spell| Combined with the highlighting used otherwise.
@@ -138,11 +138,11 @@ local theme = lush(function(injected_functions)
     -- SpellRare      { }, -- Word that is recognized by the spellchecker as one that is hardly ever used. |spell| Combined with the highlighting used otherwise.
     -- StatusLine     { }, -- Status line of current window
     -- StatusLineNC   { }, -- Status lines of not-current windows. Note: If this is equal to "StatusLine" Vim will use "^^^" in the status line of the current window.
-    -- TabLine        { }, -- Tab pages line, not active tab page label
+    -- TabLine        { }, -- Tab pages line, not active /regotab page label
     -- TabLineFill    { }, -- Tab pages line, where there are no labels
     -- TabLineSel     { }, -- Tab pages line, active tab page label
     -- Title          { }, -- Titles for output from ":set all", ":autocmd" etc.
-    Visual         {fg = LIGHTER, bg = LIGHT }, -- Visual mode selection
+    Visual         { bg = LIGHT, fg = LIGHTER }, -- Visual mode selection
     -- VisualNOS      { }, -- Visual mode selection when vim is "Not Owning the Selection".
     -- WarningMsg     { }, -- Warning messages
     -- Whitespace     { }, -- "nbsp", "space", "tab" and "trail" in 'listchars'
@@ -169,33 +169,32 @@ local theme = lush(function(injected_functions)
     -- Float          { }, --   A floating point constant: 2.3e10
 
     -- Identifier     { }, -- (*) Any variable name
-    Function    { fg = PURPLE }, --   Function name (also: methods for classes)
 
     -- Statement      { }, -- (*) Any statement
+    Function    { fg = BLUE }, --   Function name (also: methods for classes)
     Conditional { fg = BLUE }, --   if, then, else, endif, switch, etc.
     Repeat      { fg = BLUE }, --   for, do, while, etc.
     Label       { fg = BLUE }, --   case, default, etc.
-    Operator    { fg = BLUE }, --   "sizeof", "+", "*", etc.
     Keyword     { fg = BLUE }, --   any other keyword
     Exception   { fg = BLUE }, --   try, catch, throw
+    Operator    { fg = BLUE }, --   "sizeof", "+", "*", etc.
 
-    -- PreProc        { }, -- (*) Generic Preprocessor
-    -- Include        { }, --   Preprocessor #include
-    -- Define         { }, --   Preprocessor #define
-    -- Macro          { }, --   Same as Define
-    -- PreCondit      { }, --   Preprocessor #if, #else, #endif, etc.
+    PreProc        { fg = RED },-- (*) Generic Preprocessor
+    Include        { fg = RED  },--   Preprocessor #include
+    Define         { fg = RED  },--   Preprocessor #define
+    Macro          { fg = RED  },--   Same as Define
+    PreCondit      { fg = RED  }, --   Preprocessor #if, #else, #endif, etc.
+    -- Type           { fg = ORANGE }, -- (*) int, long, char, etc.
+    StorageClass   { fg = PURPLE }, --   static, register, volatile, etc.
+    Structure      { fg = PURPLE }, --   struct, union, enum, etc.
+    Typedef        { fg = PURPLE }, --   A typedef
 
-    -- Type           { }, -- (*) int, long, char, etc.
-    -- StorageClass   { }, --   static, register, volatile, etc.
-    -- Structure      { }, --   struct, union, enum, etc.
-    -- Typedef        { }, --   A typedef
-
-    -- Special        { }, -- (*) Any special symbol
-    -- SpecialChar    { }, --   Special character in a constant
-    -- Tag            { }, --   You can use CTRL-] on this
-    -- Delimiter      { }, --   Character that needs attention
-    -- SpecialComment { }, --   Special things inside a comment (e.g. '\n')
-    -- Debug          { }, --   Debugging statements
+    Special        { fg = PURPLE }, -- (*) Any special symbol
+    -- SpecialChar    { fg = BLUE }, --   Special character in a constant
+    Tag            { fg = BLUE }, --   You can use CTRL-] on this
+    Delimiter      { fg = TEXT }, --   Character that needs attention, Python paren
+    SpecialComment { fg = RED }, --   Special things inside a comment (e.g. '\n')
+    Debug          { fg = RED }, --   Debugging statements
 
     -- Underlined     { gui = "underline" }, -- Text that stands out, HTML links
     -- Ignore         { }, -- Left blank, hidden |hl-Ignore| (NOTE: May be invisible here in template)
@@ -281,7 +280,7 @@ local theme = lush(function(injected_functions)
     -- sym"@number"            { }, -- Number
     -- sym"@boolean"           { }, -- Boolean
     -- sym"@float"             { }, -- Float
-    -- sym"@function"          { }, -- Function
+    sym"@function"          { fg = PURPLE }, -- Function
     -- sym"@function.builtin"  { }, -- Special
     -- sym"@function.macro"    { }, -- Macro
     -- sym"@parameter"         { }, -- Identifier
