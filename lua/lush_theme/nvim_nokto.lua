@@ -109,7 +109,7 @@ local theme = lush(function(injected_functions)
 		-- CursorLineNr   { }, -- Like LineNr when 'cursorline' or 'relativenumber' is set for the cursor line.
 		-- CursorLineFold { }, -- Like FoldColumn when 'cursorline' is set for the cursor line
 		-- CursorLineSign { }, -- Like SignColumn when 'cursorline' is set for the cursor line
-		MatchParen({ fg = TEXT, bg = DARK }), -- Character under the cursor or just before it, if it is a paired bracket, and its match. |pi_paren.txt|
+		MatchParen({ fg = BLACK, bg = STRING }), -- Character under the cursor or just before it, if it is a paired bracket, and its match. |pi_paren.txt|
 		-- ModeMsg        { }, -- 'showmode' message (e.g., "-- INSERT -- ")
 		-- MsgArea        { }, -- Area for messages and cmdline
 		-- MsgSeparator   { }, -- Separator for scrolled messages, `msgsep` flag of 'display'
@@ -146,11 +146,11 @@ local theme = lush(function(injected_functions)
 		-- VisualNOS      { }, -- Visual mode selection when vim is "Not Owning the Selection".
 		-- WarningMsg     { }, -- Warning messages
 		-- Whitespace     { }, -- "nbsp", "space", "tab" and "trail" in 'listchars'
-		-- Winseparator   { }, -- Separator between window splits. Inherts from |hl-VertSplit| by default, which it will replace eventually.
+		Winseparator({ fg = COMMENT }), -- Separator between window splits. Inherts from |hl-VertSplit| by default, which it will replace eventually.
 		-- WildMenu       { }, -- Current match in 'wildmenu' completion
 		-- WinBar         { }, -- Window bar of current window
 		-- WinBarNC       { }, -- Window bar of not-current windows
-
+		IndentBlanklineChar({ fg = COMMENT }),
 		-- Common vim syntax groups used for all kinds of code and markup.
 		-- Commented-out groups should chain up to their preferred (*) group
 		-- by default.
@@ -207,7 +207,7 @@ local theme = lush(function(injected_functions)
 
 		-- See :h lsp-highlight, some groups may not be listed, submit a PR fix to lush-template!
 		--
-		LspReferenceText({ fg = TEXT, bg = DARKER }), -- Used for highlighting "text" references
+		LspReferenceText({}), -- Used for highlighting "text" references
 		-- LspReferenceRead            { } , -- Used for highlighting "read" references
 		-- LspReferenceWrite           { } , -- Used for highlighting "write" references
 		-- LspCodeLens                 { } , -- Used to color the virtual text of the codelens. See |nvim_buf_set_extmark()|.
