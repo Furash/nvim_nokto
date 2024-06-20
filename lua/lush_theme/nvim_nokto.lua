@@ -56,7 +56,7 @@ local BLACK = hsl(0, 0, 0)
 
 -- Text
 local TEXT = hsl("#e0e2de")
-local COMMENT = hsl("#576e7b")
+local COMMENT = hsl("#5c8391")
 local STRING = hsl("#60b48d")
 local CHAR = hsl("#60c040")
 local BLUE = hsl("#22dddd")
@@ -100,16 +100,17 @@ local theme = lush(function(injected_functions)
 		-- Folded         { }, -- Line used for closed folds
 		-- FoldColumn     { }, -- 'foldcolumn'
 		-- SignColumn     { }, -- Column where |signs| are displayed
-		CurSearch({ fg = ACTIVE, bg = DARKER }), -- Highlighting a search pattern under the cursor (see 'hlsearch')
-		IncSearch({ fg = PURPLE, bg = DARKER }), -- 'incsearch' highlighting; also used for the text replaced with ":s///c"
-		Substitute({ fg = TEXT, bg = DARKER }), -- |:substitute| replacement text highlighting
+		Search({ fg = ACTIVE, bg = LIGHT }), -- Last search pattern highlighting (see 'hlsearch'). Also used for similar items that need to stand out.
+		CurSearch({ fg = ACTIVE, bg = DARKER.darken(30) }), -- Highlighting a search pattern under the cursor (see 'hlsearch')
+		IncSearch({ fg = DARKER, bg = ACTIVE }), -- 'incsearch' highlighting; also used for the text replaced with ":s///c"
+		Substitute({ fg = RED, bg = DARK, italic = true }), -- |:substitute| replacement text highlighting
 		LineNr({ fg = TEXT.darken(30).desaturate(50) }), -- Line number for ":number" and ":#" commands, and when 'number' or 'relativenumber' option is set.
 		LineNrAbove({ fg = TEXT.darken(50).desaturate(75) }), -- Line number for when the 'relativenumber' option is set, above the cursor line
 		LineNrBelow({ fg = TEXT.darken(50).desaturate(75) }), -- Line number for when the 'relativenumber' option is set, below the cursor line
 		-- CursorLineNr   { }, -- Like LineNr when 'cursorline' or 'relativenumber' is set for the cursor line.
 		-- CursorLineFold { }, -- Like FoldColumn when 'cursorline' is set for the cursor line
 		-- CursorLineSign { }, -- Like SignColumn when 'cursorline' is set for the cursor line
-		MatchParen({ fg = BLACK, bg = STRING }), -- Character under the cursor or just before it, if it is a paired bracket, and its match. |pi_paren.txt|
+		MatchParen({ bold = true }), -- Character under the cursor or just before it, if it is a paired bracket, and its match. |pi_paren.txt|
 		-- ModeMsg        { }, -- 'showmode' message (e.g., "-- INSERT -- ")
 		-- MsgArea        { }, -- Area for messages and cmdline
 		-- MsgSeparator   { }, -- Separator for scrolled messages, `msgsep` flag of 'display'
@@ -121,16 +122,15 @@ local theme = lush(function(injected_functions)
 		-- FloatTitle     { }, -- Title of floating windows.
 		NormalNC({ fg = TEXT }), -- normal text in non-current windows
 		Pmenu({ fg = TEXT }), -- Popup menu: Normal item.
-		-- PmenuSel       { }, -- Popup menu: Selected item.
+		PmenuSel({ fg = TEXT, bg = DARKER }), -- Popup menu: Selected item.
 		-- PmenuKind      { }, -- Popup menu: Normal item "kind"
-		-- PmenuKindSel   { }, -- Popup menu: Selected item "kind"
+		PmenuKindSel({ fg = ACTIVE, bg = DARKER }), -- Popup menu: Selected item "kind"
 		-- PmenuExtra     { }, -- Popup menu: Normal item "extra text"
 		-- PmenuExtraSel  { }, -- Popup menu: Selected item "extra text"
 		-- PmenuSbar      { }, -- Popup menu: Scrollbar.
 		PmenuThumb({ fg = TEXT, bg = DARKER.darken(30) }), -- Popup menu: Thumb of the scrollbar.
 		-- Question       { }, -- |hit-enter| prompt and yes/no questions
 		-- QuickFixLine   { }, -- Current |quickfix| item in the quickfix window. Combined with |hl-CursorLine| when the cursor is there.
-		Search({ fg = PURPLE, bg = DARKER }), -- Last search pattern highlighting (see 'hlsearch'). Also used for similar items that need to stand out.
 		-- SpecialKey     { }, -- Unprintable characters: text displayed differently from what it really is. But not 'listchars' whitespace. |hl-Whitespace|
 		-- SpellBad       { }, -- Word that is not recognized by the spellchecker. |spell| Combined with the highlighting used otherwise.
 		-- SpellCap       { }, -- Word that should start with a capital. |spell| Combined with the highlighting used otherwise.
@@ -150,7 +150,6 @@ local theme = lush(function(injected_functions)
 		-- WildMenu       { }, -- Current match in 'wildmenu' completion
 		-- WinBar         { }, -- Window bar of current window
 		-- WinBarNC       { }, -- Window bar of not-current windows
-		IndentBlanklineChar({ fg = COMMENT }),
 		-- Common vim syntax groups used for all kinds of code and markup.
 		-- Commented-out groups should chain up to their preferred (*) group
 		-- by default.
@@ -159,7 +158,7 @@ local theme = lush(function(injected_functions)
 		--
 		-- Uncomment and edit if you want more specific syntax highlighting.
 
-		Comment({ fg = COMMENT }), -- Any comment
+		Comment({ fg = COMMENT, italic = true }), -- Any comment
 
 		-- Constant       { }, -- (*) Any constant
 		String({ fg = STRING }), --   A string constant: "this is a string"
@@ -190,7 +189,7 @@ local theme = lush(function(injected_functions)
 		Typedef({ fg = PURPLE }), --   A typedef
 
 		Special({ fg = PURPLE }), -- (*) Any special symbol
-		-- SpecialChar    { fg = BLUE }, --   Special character in a constant
+		SpecialChar({ fg = BLUE }), --   Special character in a constant
 		Tag({ fg = BLUE }), --   You can use CTRL-] on this
 		Delimiter({ fg = TEXT }), --   Character that needs attention, Python paren
 		SpecialComment({ fg = RED }), --   Special things inside a comment (e.g. '\n')
